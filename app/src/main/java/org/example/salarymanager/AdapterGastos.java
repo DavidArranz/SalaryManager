@@ -8,13 +8,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewHolder> {
 
-    private List<Gasto> expenses;
+    private ArrayList<Gasto> expenses;
 
-    public AdapterGastos(List<Gasto> expenses) {
+    public AdapterGastos(ArrayList<Gasto> expenses) {
         this.expenses = expenses;
     }
 
@@ -22,7 +23,7 @@ public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewH
     @Override
     public GastoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.gasto_item, parent, false);
+                .inflate(R.layout.item_gasto, parent, false);
         return new GastoViewHolder(view);
     }
 
