@@ -1,12 +1,20 @@
 package org.example.salarymanager;
 
+import android.graphics.Bitmap;
+
+import java.util.Date;
+
 public class Gasto {
     private String nombre;
-    private long cantidad;
+    private double monto;
+    private Bitmap icon;
+    private Date date;
 
-    public Gasto(String n, long cant){
+    public Gasto(String n, double cant, Date date, Bitmap icon){
         nombre=n;
-        cantidad=cant;
+        monto=cant;
+        this.date = date;
+        this.icon = icon;
     }
 
     public String getNombre() {
@@ -17,11 +25,15 @@ public class Gasto {
         this.nombre = nombre;
     }
 
-    public long getCantidad() {
-        return cantidad;
-    }
+    public double getMonto() {return monto;}
 
-    public void setCantidad(long cantidad) {
-        this.cantidad = cantidad;
-    }
+    public void setMonto(double monto) {this.monto = monto;}
+
+    public Bitmap getIcon() {return icon;}
+
+    public void setIcon(Bitmap icon) {this.icon = icon;}
+
+    public Date getDate() {return date;}
+
+    public void setDate(Date date) {this.date = date;}
 }

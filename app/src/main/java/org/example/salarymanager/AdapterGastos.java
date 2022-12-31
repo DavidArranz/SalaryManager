@@ -3,13 +3,17 @@ package org.example.salarymanager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewHolder> {
 
@@ -41,17 +45,25 @@ public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewH
     static class GastoViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvNom;
-        private TextView tvCant;
+        private TextView tvMont;
+        private TextView tvFecha;
+        private ImageView ivIcon;
 
         public GastoViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNom = itemView.findViewById(R.id.textViewNombre);
-            tvCant = itemView.findViewById(R.id.textViewCantidad);
+            tvMont = itemView.findViewById(R.id.textViewMonto);
+            tvFecha = itemView.findViewById(R.id.textViewFecha);
+            ivIcon = itemView.findViewById(R.id.imageViewIcon);
         }
 
         public void bind(Gasto expense) {
             tvNom.setText(expense.getNombre());
-            tvCant.setText(String.valueOf(expense.getCantidad()));
+            DecimalFormat decimalFormat = new DecimalFormat("#,##0.00€",new DecimalFormatSymbols(Locale.ITALIAN));
+            tvMont.setText(String.valueOf(decimalFormat.format(expense.getMonto())));
+            SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy");
+            tvFecha.setText(format.format(expense.getDate()));
+            ivIcon.setImageBitmap(expense.getIcon());
         }
     }
 }

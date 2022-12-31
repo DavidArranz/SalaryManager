@@ -9,13 +9,12 @@
         android:id="@+id/textViewNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:text="NOMBRE"
         android:textColor="#000000"
         android:textSize="15dp"
-        app:layout_constraintStart_toEndOf="@+id/imageViewIconSet"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="71dp" />
 
     <TextView
         android:id="@+id/textViewFecha"
@@ -28,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewNombre" />
 
     <ImageView
-        android:id="@+id/imageViewIconSet"
+        android:id="@+id/imageViewIcon"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
