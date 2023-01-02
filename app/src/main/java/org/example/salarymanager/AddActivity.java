@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -54,12 +56,18 @@ public class AddActivity extends AppCompatActivity {
                 intent.putExtra("nombre",nom);
                 intent.putExtra("monto",monto);
                 intent.putExtra("date",date);
+                if(image == null){
+                    Drawable drawable = getResources().getDrawable(R.drawable.flecha_izq);
+                    image = ((BitmapDrawable)drawable).getBitmap();
+                }
                 intent.putExtra("icon",image);
                 setResult(RESULT_OK,intent);
                 finish();
             }
         });
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

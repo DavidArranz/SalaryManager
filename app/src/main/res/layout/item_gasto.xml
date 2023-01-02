@@ -33,8 +33,11 @@
         android:layout_marginStart="16dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/textViewFecha"
+        app:layout_constraintEnd_toStartOf="@+id/textViewNombre"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewNombre"
+        app:layout_constraintVertical_bias="0.111"
         app:srcCompat="@drawable/noimg" />
 
     <TextView

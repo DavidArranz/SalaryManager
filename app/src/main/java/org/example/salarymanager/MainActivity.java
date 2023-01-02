@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,11 +15,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
     Button bAdd;
     ImageButton bEdit;
     TextView tvObjetivo,tvSalario,tvMonto;
-    File file_gastos,file_objetivo,file_salario,file_monto;
+    FileManager fm;
+
+    boolean objFlag=true;
 
     //metodo que recive las respuestas de los intents
     @Override
@@ -42,20 +49,35 @@ public class MainActivity extends AppCompatActivity {
         //Respuesta de la creracion de un gasto
         if (resultCode == RESULT_OK && requestCode == 1) {
             String nom,sdate;
-            double monto;
+            double monto_gasto;
             Bitmap icon;
             //recepcion de los datos del gasto
             nom=intent.getStringExtra("nombre");
             sdate=intent.getStringExtra("date");
-            monto=intent.getDoubleExtra("monto",0.0);
+            monto_gasto=intent.getDoubleExtra("monto",0.0);
             icon=intent.getParcelableExtra("icon");
             //creacion del gasto
-            Gasto gasto = new Gasto(nom,monto,sdate,icon);
+            Gasto gasto = new Gasto(nom,monto_gasto,sdate,icon);
             gastos.add(gasto);
             //se notifica al adaptador el nuevo gasto
             adapter.notifyItemInserted(gastos.size()-1);
             //se vuelve a guardar la lista de gastos actualizada
-            saveData(gastos,file_gastos);
+            fm.saveData(gastos);
+            //se actualiza el monto
+            monto = monto-monto_gasto;
+            //se guarda la nueva cantidad
+            fm.saveData(String.valueOf(monto),"monto");
+            //se establece la nueva cantidad en la interfaz
+            tvMonto.setText(String.valueOf(monto)+"€");
+            //si objFlag es true (todabia no se habia rebasado el objetivo)
+            //y el monto es ahora menor que el ovjetivo
+            //se crea el popup
+            //y se pone el Flag a false para que no se vuelva a ejecutar
+            if(objFlag && monto<objetivo){
+                createPopUp();
+                objFlag = false;
+                fm.saveData(Boolean.toString(objFlag),"flag");
+            }
 
         }
         //respuesta de la modificacion de parametros
@@ -63,10 +85,11 @@ public class MainActivity extends AppCompatActivity {
             String obj,sal;
             obj = intent.getStringExtra("objetivo");
             sal =  intent.getStringExtra("salario");
-            saveData(obj,file_objetivo);
-            saveData(sal,file_salario);
+            fm.saveData(obj,"objetivo");
+            fm.saveData(sal,"salario");
             objetivo=Double.parseDouble(obj);
             salario=Double.parseDouble(sal);
+            monto=salario;
             tvObjetivo.setText(objetivo+"€");
             tvSalario.setText(salario+"€");
             tvMonto.setText(salario+"€");
@@ -74,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,31 +109,16 @@ public class MainActivity extends AppCompatActivity {
         tvObjetivo = findViewById(R.id.textViewObjetivo);
         tvSalario = findViewById(R.id.textViewEditSalario);
         bEdit=findViewById(R.id.imageButtonEdit);
-        file_gastos = new File(getFilesDir(), "rvGastos.bin");
-        file_objetivo = new File(getFilesDir(), "objetivo.bin");
-        file_salario = new File(getFilesDir(), "salario.bin");
-        file_monto = new File(getFilesDir(),"monto.bin");
-        if(checkIfFileExists(file_gastos) && file_gastos.length()!=0){
-            try {
-                ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file_gastos));
-                gastos = (ArrayList<Gasto>) inputStream.readObject();
-                inputStream.close();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }else{
-            gastos = new ArrayList<>();
-        }
-        if(checkIfFileExists(file_salario) && file_salario.length()!=0){
-            salario = readDouble(file_salario);
-            objetivo = readDouble(file_objetivo);
-            tvSalario.setText(String.valueOf(salario));
-            tvObjetivo.setText(String.valueOf(objetivo));
-        }
-        if(checkIfFileExists(file_monto) && file_monto.length()!=0){
-                monto = readDouble(file_monto);
-                tvMonto.setText(String.valueOf(monto));
-        }
+         fm = new FileManager(getApplicationContext());
+
+        gastos = fm.getGastos();
+        salario = fm.getSalario();
+        objetivo = fm.getObjetivo();
+        tvSalario.setText(String.valueOf(salario));
+        tvObjetivo.setText(String.valueOf(objetivo));
+        monto=fm.getMonto();
+        tvMonto.setText(String.valueOf(monto));
+        objFlag = fm.getFlag();
 
         adapter = new AdapterGastos(gastos);
         rv = findViewById(R.id.recyclerViewGastos);
@@ -134,67 +145,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public void saveData(ArrayList data,File file){
 
 
-        try {
-            FileOutputStream outputStream = outputStream = new FileOutputStream(file,false);
+    private void createPopUp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Aviso");
+        builder.setMessage("Queda poco dinero del salario de este mes.");
 
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-        objectOutputStream.writeObject(data);
-        objectOutputStream.close();
-        outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-    public void saveData(String data,File file){
-        try {
-            FileOutputStream outputStream = outputStream = new FileOutputStream(file,false);
-
-
-            outputStream.write(data.getBytes());
-            outputStream.close();
-
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public Double readDouble(File file){
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            int i;
-            i = fis.read();
-            while (i != -1) {
-                byteArrayOutputStream.write(i);
-                i = fis.read();
-            }
-            fis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String valueString = byteArrayOutputStream.toString();
-        double value = Double.parseDouble(valueString);
-        return value;
-
-    }
-    public boolean checkIfFileExists(File file){
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                return false;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }else{
-            return true;
-        }
-        return false;
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
