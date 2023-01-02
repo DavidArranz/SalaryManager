@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -52,7 +51,7 @@ public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewH
         public GastoViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNom = itemView.findViewById(R.id.textViewNombre);
-            tvMont = itemView.findViewById(R.id.textViewMonto);
+            tvMont = itemView.findViewById(R.id.textViewMontoGasto);
             tvFecha = itemView.findViewById(R.id.textViewFecha);
             ivIcon = itemView.findViewById(R.id.imageViewIcon);
         }
@@ -61,8 +60,7 @@ public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewH
             tvNom.setText(expense.getNombre());
             DecimalFormat decimalFormat = new DecimalFormat("#,##0.00€",new DecimalFormatSymbols(Locale.ITALIAN));
             tvMont.setText(String.valueOf(decimalFormat.format(expense.getMonto())));
-            SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy");
-            tvFecha.setText(format.format(expense.getDate()));
+            tvFecha.setText(expense.getDate().toString());
             ivIcon.setImageBitmap(expense.getIcon());
         }
     }

@@ -2,15 +2,17 @@ package org.example.salarymanager;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
-public class Gasto {
+public class Gasto implements Serializable {
     private String nombre;
     private double monto;
     private Bitmap icon;
-    private Date date;
+    private String date;
 
-    public Gasto(String n, double cant, Date date, Bitmap icon){
+    public Gasto(String n, double cant, String date, Bitmap icon){
         nombre=n;
         monto=cant;
         this.date = date;
@@ -33,7 +35,7 @@ public class Gasto {
 
     public void setIcon(Bitmap icon) {this.icon = icon;}
 
-    public Date getDate() {return date;}
+    public String getDate() {return date;}
 
-    public void setDate(Date date) {this.date = date;}
+    public void setDate(Date String) {this.date = date;}
 }
