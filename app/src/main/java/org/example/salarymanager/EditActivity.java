@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+    //esta clase recoje los nuevo datos del Salario y el monto objetivo
 public class EditActivity extends AppCompatActivity {
     EditText etObjetivo,etSalario;
     Button bSave;
@@ -19,6 +19,7 @@ public class EditActivity extends AppCompatActivity {
         etObjetivo=findViewById(R.id.editTextObjetivo);
         etSalario = findViewById(R.id.editTextSalario);
         bSave = findViewById(R.id.buttonSave2);
+        //al pulsar el boton de guardar se recogen los datos y se devuelven como respuesta al MainActivity
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

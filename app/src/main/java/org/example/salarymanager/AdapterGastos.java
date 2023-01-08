@@ -13,13 +13,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
-
+//adaptador para el RecivlerView del objeto Gasto
 public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewHolder> {
 
-    private ArrayList<Gasto> expenses;
+    private ArrayList<Gasto> gastos;
 
-    public AdapterGastos(ArrayList<Gasto> expenses) {
-        this.expenses = expenses;
+    public AdapterGastos(ArrayList<Gasto> gastos) {
+        this.gastos = gastos;
     }
 
     @NonNull
@@ -32,13 +32,13 @@ public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewH
 
     @Override
     public void onBindViewHolder(@NonNull GastoViewHolder holder, int position) {
-        Gasto expense = expenses.get(position);
+        Gasto expense = gastos.get(position);
         holder.bind(expense);
     }
 
     @Override
     public int getItemCount() {
-        return expenses.size();
+        return gastos.size();
     }
 
     static class GastoViewHolder extends RecyclerView.ViewHolder {

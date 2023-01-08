@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.SalaryManager" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">#00D99C</item>
+        <item name="colorPrimaryVariant">#1A1A1A</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

@@ -1,7 +1,9 @@
 package org.example.salarymanager;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,9 +25,9 @@ import java.io.InputStream;
 public class AddActivity extends AppCompatActivity {
     EditText etMonto,etFecha,etNombre;
     ImageView ivIcono;
-    Bitmap image = null;
     Button bSave;
-    public static final int REQUEST_CODE_IMAGE_SELECT = 1;
+    public static final int REQUEST_CODE_IMAGE_SELECT = 101;
+    boolean selected=false;
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,16 +37,18 @@ public class AddActivity extends AppCompatActivity {
         etNombre = findViewById(R.id.editTextNombre);
         ivIcono = findViewById(R.id.imageViewIconSet);
         bSave = findViewById(R.id.buttonSave);
-
+        /*Cuando se clica el Image View del selector de icono se realiza un intent para seleccionar una imagen
+        * de la galeria*/
         ivIcono.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
+                Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, REQUEST_CODE_IMAGE_SELECT);
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"), REQUEST_CODE_IMAGE_SELECT);
             }
         });
+        /*al presionar el boton de guardar se recogen los datos y se envian como respuesta del inatent al MainActivity*/
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,35 +61,37 @@ public class AddActivity extends AppCompatActivity {
                 intent.putExtra("nombre",nom);
                 intent.putExtra("monto",monto);
                 intent.putExtra("date",date);
-                if(image == null){
-                    Drawable drawable = getResources().getDrawable(R.drawable.flecha_izq);
-                    image = ((BitmapDrawable)drawable).getBitmap();
+                Bitmap bmSmall;
+
+                if(selected){
+                    Bitmap bm = ((BitmapDrawable)ivIcono.getDrawable()).getBitmap();
+                     bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
+
+                }else{
+                    Bitmap bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.flecha_izq)).getBitmap();
+                     bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
                 }
-                intent.putExtra("icon",image);
+                intent.putExtra("icon",(bmSmall));
                 setResult(RESULT_OK,intent);
                 finish();
             }
         });
     }
 
-
+    //respuesta del intent para escoger un icono
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_IMAGE_SELECT && resultCode == RESULT_OK) {
+            //Recoge el Uri de la imagen
             Uri imageUri = data.getData();
             InputStream inputStream = null;
-            try {
-                inputStream = getContentResolver().openInputStream(imageUri);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            if (null != imageUri) {
+                ivIcono.setImageURI(imageUri);
             }
-            image = BitmapFactory.decodeStream(inputStream);
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            selected = true;
         }
     }
 

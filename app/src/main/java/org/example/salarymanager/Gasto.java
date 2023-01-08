@@ -5,18 +5,18 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
-
+//objeto de un Gasto
 public class Gasto implements Serializable {
     private String nombre;
     private double monto;
-    private Bitmap icon;
+    private ProxyBitmap icon;
     private String date;
 
     public Gasto(String n, double cant, String date, Bitmap icon){
         nombre=n;
         monto=cant;
         this.date = date;
-        this.icon = icon;
+        this.icon = new ProxyBitmap(icon);
     }
 
     public String getNombre() {
@@ -31,9 +31,9 @@ public class Gasto implements Serializable {
 
     public void setMonto(double monto) {this.monto = monto;}
 
-    public Bitmap getIcon() {return icon;}
+    public Bitmap getIcon() {return icon.getBitmap();}
 
-    public void setIcon(Bitmap icon) {this.icon = icon;}
+    public void setIcon(Bitmap icon) {this.icon = new ProxyBitmap(icon);}
 
     public String getDate() {return date;}
 

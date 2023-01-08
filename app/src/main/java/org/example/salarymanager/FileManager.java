@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
+//esta clase esta dedicada al manejo de la informacion en los ficheros.
 public class FileManager {
-    private File file_gastos,file_objetivo,file_salario,file_monto,file_obj_flag;
+    private File file_gastos,file_objetivo,file_salario,file_monto,file_obj_flag,file_mes;
 
     public FileManager(Context context){
         file_gastos = new File(context.getFilesDir(), "rvGastos.bin");
@@ -23,7 +23,10 @@ public class FileManager {
         file_salario = new File(context.getFilesDir(), "salario.bin");
         file_monto = new File(context.getFilesDir(),"monto.bin");
         file_obj_flag = new File(context.getFilesDir(),"flag.bin");
+        file_mes = new File(context.getFilesDir(),"mes.bin");
     }
+    //metodo que devuelve del fichero gastos el arraylist de gastos,
+    //en caso de no existir devuelve un arraylist vacio;
     public ArrayList<Gasto> getGastos(){
         ArrayList<Gasto> gastos = new ArrayList<>();
         if(file_gastos.exists() && file_gastos.length()!=0){
@@ -38,6 +41,7 @@ public class FileManager {
         }
         return gastos;
     }
+    //metodo que devuelve el salario
     public double getSalario(){
         if(file_salario.exists()&& file_salario.length()!=0){
             return readDouble(file_salario);
@@ -45,6 +49,7 @@ public class FileManager {
             return 0;
         }
     }
+    //metodo que devuelve el monto objetivo
     public double getObjetivo(){
         if(file_objetivo.exists()&& file_objetivo.length()!=0){
             return readDouble(file_objetivo);
@@ -52,6 +57,7 @@ public class FileManager {
             return 0;
         }
     }
+    //metodo que devuelve el monto actual
     public double getMonto(){
         if(file_monto.exists() && file_monto.length()!=0){
             return readDouble(file_monto);
@@ -59,6 +65,7 @@ public class FileManager {
             return 0;
         }
     }
+    //metodo que devuelve un flag que indica si el monto ovjetivo ya fue revasado
     public boolean getFlag(){
         if (file_obj_flag.exists() && file_obj_flag.length()!=0) {
             // Lee el flag del fichero
@@ -70,6 +77,7 @@ public class FileManager {
         }
         return true;
     }
+    //metodo que se usa para leer un double de un fichero
     private Double readDouble(File file){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
@@ -91,10 +99,11 @@ public class FileManager {
         return value;
 
     }
+    //metodo que guarda un arraylist en el fichero gastos
     public void saveData(ArrayList data){
 
-
         try {
+            file_gastos.createNewFile();
             FileOutputStream outputStream = outputStream = new FileOutputStream(file_gastos,false);
 
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
@@ -106,6 +115,7 @@ public class FileManager {
         }
 
     }
+    //metodo que guarda un string en un fichero dependiendo del string que se pase como segundo parametro
     public void saveData(String data,String str){
         File file = null;
         switch(str){
@@ -121,6 +131,8 @@ public class FileManager {
             case "salario":
                 file = file_salario;
                 break;
+            case "mes":
+                file = file_mes;
         }
         try {
             FileOutputStream outputStream = outputStream = new FileOutputStream(file,false);
@@ -132,6 +144,31 @@ public class FileManager {
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public int getCurrentMonth() {
+        if (file_mes.exists() && file_mes.length() != 0) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            try {
+                FileInputStream fis = new FileInputStream(file_mes);
+                int i;
+                i = fis.read();
+                while (i != -1) {
+                    byteArrayOutputStream.write(i);
+                    i = fis.read();
+                }
+                fis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String valueString = byteArrayOutputStream.toString();
+            int value = Integer.parseInt(valueString);
+            return value;
+        } else {
+            return -1;
         }
     }
 }
