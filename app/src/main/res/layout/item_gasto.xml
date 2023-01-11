@@ -3,25 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="70dp">
 
     <TextView
         android:id="@+id/textViewNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
         android:text="NOMBRE"
         android:textColor="#000000"
         android:textSize="15dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="71dp" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewIcon"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewFecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:paddingBottom="10dp"
         android:text="25 diciembre 2022"
         android:textSize="12dp"
         app:layout_constraintStart_toStartOf="@+id/textViewNombre"
@@ -29,16 +29,13 @@
 
     <ImageView
         android:id="@+id/imageViewIcon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/textViewFecha"
-        app:layout_constraintEnd_toStartOf="@+id/textViewNombre"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewNombre"
-        app:layout_constraintVertical_bias="0.111"
         app:srcCompat="@drawable/noimg" />
 
     <TextView

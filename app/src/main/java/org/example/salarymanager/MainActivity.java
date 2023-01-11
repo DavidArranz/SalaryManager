@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             //se vuelve a guardar la lista de gastos actualizada
             fm.saveData(gastos);
             //se actualiza el monto
-            monto = monto-monto_gasto;
+            monto = monto+monto_gasto;
             //se guarda la nueva cantidad
             fm.saveData(String.valueOf(monto),"monto");
             //se establece la nueva cantidad en la interfaz

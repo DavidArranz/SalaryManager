@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -21,11 +22,13 @@ import androidx.core.content.ContextCompat;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 public class AddActivity extends AppCompatActivity {
     EditText etMonto,etFecha,etNombre;
     ImageView ivIcono;
     Button bSave;
+    Switch sIngreso;
     public static final int REQUEST_CODE_IMAGE_SELECT = 101;
     boolean selected=false;
     @SuppressLint("MissingInflatedId")
@@ -37,6 +40,7 @@ public class AddActivity extends AppCompatActivity {
         etNombre = findViewById(R.id.editTextNombre);
         ivIcono = findViewById(R.id.imageViewIconSet);
         bSave = findViewById(R.id.buttonSave);
+        sIngreso = findViewById(R.id.switchIngreso);
         /*Cuando se clica el Image View del selector de icono se realiza un intent para seleccionar una imagen
         * de la galeria*/
         ivIcono.setOnClickListener(new View.OnClickListener() {
@@ -54,9 +58,13 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String nom,date;
                 Double monto;
-                nom = etNombre.getText().toString();
+                nom = etNombre.getText().toString().toUpperCase();
                 date = etFecha.getText().toString();
                 monto = Double.parseDouble(etMonto.getText().toString());
+                monto = Math.abs(monto);
+                if(!sIngreso.isChecked()){
+                    monto = -monto;
+                }
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("nombre",nom);
                 intent.putExtra("monto",monto);
@@ -68,7 +76,13 @@ public class AddActivity extends AppCompatActivity {
                      bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
 
                 }else{
-                    Bitmap bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.flecha_izq)).getBitmap();
+                    Bitmap bm = null;
+                    if(monto<0){
+                        bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.flecha_izq)).getBitmap();
+                    }else{
+                        bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.derecha)).getBitmap();
+                    }
+
                      bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
                 }
                 intent.putExtra("icon",(bmSmall));

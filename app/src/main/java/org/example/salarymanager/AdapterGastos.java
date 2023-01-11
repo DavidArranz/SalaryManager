@@ -1,5 +1,6 @@
 package org.example.salarymanager;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,13 @@ public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewH
         public void bind(Gasto expense) {
             tvNom.setText(expense.getNombre());
             DecimalFormat decimalFormat = new DecimalFormat("#,##0.00€",new DecimalFormatSymbols(Locale.ITALIAN));
-            tvMont.setText(String.valueOf(decimalFormat.format(expense.getMonto())));
+            double monto = expense.getMonto();
+            if(monto>0) {
+                tvMont.setText("+"+String.valueOf(decimalFormat.format(expense.getMonto())));
+                tvMont.setTextColor(Color.parseColor("#01E7C0"));
+            }else{
+                tvMont.setText(String.valueOf(decimalFormat.format(expense.getMonto())));
+            }
             tvFecha.setText(expense.getDate().toString());
             ivIcon.setImageBitmap(expense.getIcon());
         }
