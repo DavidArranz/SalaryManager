@@ -2,6 +2,7 @@ package org.example.salarymanager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -22,10 +24,11 @@ import androidx.core.content.ContextCompat;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class AddActivity extends AppCompatActivity {
-    EditText etMonto,etFecha,etNombre;
+    EditText etMonto,etNombre,etDate;
     ImageView ivIcono;
     Button bSave;
     Switch sIngreso;
@@ -36,8 +39,8 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         etMonto = findViewById(R.id.editTextNumberMonto);
-        etFecha = findViewById(R.id.editTextDate);
         etNombre = findViewById(R.id.editTextNombre);
+        etDate = findViewById(R.id.editTextDate);
         ivIcono = findViewById(R.id.imageViewIconSet);
         bSave = findViewById(R.id.buttonSave);
         sIngreso = findViewById(R.id.switchIngreso);
@@ -59,7 +62,7 @@ public class AddActivity extends AppCompatActivity {
                 String nom,date;
                 Double monto;
                 nom = etNombre.getText().toString().toUpperCase();
-                date = etFecha.getText().toString();
+                date = etDate.getText().toString();
                 monto = Double.parseDouble(etMonto.getText().toString());
                 monto = Math.abs(monto);
                 if(!sIngreso.isChecked()){
@@ -90,6 +93,12 @@ public class AddActivity extends AppCompatActivity {
                 finish();
             }
         });
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
     }
 
     //respuesta del intent para escoger un icono
@@ -108,5 +117,21 @@ public class AddActivity extends AppCompatActivity {
             selected = true;
         }
     }
+
+    public void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                etDate.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+            }
+        }, year, month, day);
+        datePickerDialog.show();
+    }
+
 
 }

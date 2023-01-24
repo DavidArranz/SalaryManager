@@ -25,9 +25,11 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:focusable="false"
         android:inputType="date"
-        app:layout_constraintStart_toStartOf="@+id/textView3"
-        tools:layout_editor_absoluteY="180dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextNumberMonto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView3" />
 
     <EditText
         android:id="@+id/editTextNumberMonto"

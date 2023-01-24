@@ -1,48 +1,35 @@
 package org.example.salarymanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.provider.Settings;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import org.example.salarymanager.adapters.AdapterViewPager;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -50,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "Felizitacion";
     private double objetivo,salario,monto;
-    AdapterGastos adapter;
+    private AdapterViewPager vpAdapter;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
     ArrayList<Gasto> gastos;
     RecyclerView rv;
     ActionBar ab;
@@ -79,10 +68,9 @@ public class MainActivity extends AppCompatActivity {
             icon=intent.getParcelableExtra("icon");
             //creacion del gasto
             Gasto gasto = new Gasto(nom,monto_gasto,sdate,icon);
-            gastos.add(gasto);
-            //se notifica al adaptador el nuevo gasto
-            adapter.notifyItemInserted(gastos.size()-1);
+            vpAdapter.addItem(gasto);
             //se vuelve a guardar la lista de gastos actualizada
+            gastos.add(gasto);
             fm.saveData(gastos);
             //se actualiza el monto
             monto = monto+monto_gasto;
@@ -126,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        viewPager = findViewById(R.id.viewPager2);
+        tabLayout = findViewById(R.id.tabLayout);
+
         tvMonto = findViewById(R.id.textViewMonto);
         tvObjetivo = findViewById(R.id.textViewObjetivo);
         tvSalario = findViewById(R.id.textViewEditSalario);
@@ -146,9 +137,9 @@ public class MainActivity extends AppCompatActivity {
 
          //Recogida de informacion de los ficheros
         gastos = fm.getGastos();
-        adapter = new AdapterGastos(gastos);
+
         //selecion del adapter para el ReciclerView
-        rv.setAdapter(adapter);
+        //rv.setAdapter(adapter);
         salario = fm.getSalario();
         objetivo = fm.getObjetivo();
         monto=fm.getMonto();
@@ -159,8 +150,29 @@ public class MainActivity extends AppCompatActivity {
         tvObjetivo.setText(String.valueOf(objetivo));
         tvMonto.setText(String.valueOf(monto));
 
-
-
+        //creacion
+        vpAdapter = new AdapterViewPager(this,gastos);
+        viewPager.setAdapter(vpAdapter);
+        new TabLayoutMediator(tabLayout, viewPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        switch (position) {
+                            case 0:
+                                tab.setText("Todo");
+                                break;
+                            case 1:
+                                tab.setText("Gastos");
+                                break;
+                            case 2:
+                                tab.setText("Ingresos");
+                                break;
+                        }
+                    }
+                }).attach();
+        tabLayout.selectTab(tabLayout.getTabAt(1));
+        tabLayout.selectTab(tabLayout.getTabAt(2));
+        tabLayout.selectTab(tabLayout.getTabAt(0));
 
 
         //Listener para añadir un movimiento
@@ -217,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             //vacia la lista de gastos
             gastos.clear();
             //notifica al adapter
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
 
         }
 

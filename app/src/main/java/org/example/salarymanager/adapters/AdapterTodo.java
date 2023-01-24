@@ -1,4 +1,4 @@
-package org.example.salarymanager;
+package org.example.salarymanager.adapters;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -10,18 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.example.salarymanager.Gasto;
+import org.example.salarymanager.R;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
 //adaptador para el RecivlerView del objeto Gasto
-public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewHolder> {
+public class AdapterTodo extends RecyclerView.Adapter<AdapterTodo.GastoViewHolder> {
 
     private ArrayList<Gasto> gastos;
 
-    public AdapterGastos(ArrayList<Gasto> gastos) {
+    public AdapterTodo(ArrayList<Gasto> gastos) {
         this.gastos = gastos;
     }
+
 
     @NonNull
     @Override
@@ -39,7 +43,7 @@ public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewH
 
     @Override
     public int getItemCount() {
-        return gastos.size();
+            return gastos.size();
     }
 
     static class GastoViewHolder extends RecyclerView.ViewHolder {
@@ -67,8 +71,10 @@ public class AdapterGastos extends RecyclerView.Adapter<AdapterGastos.GastoViewH
             }else{
                 tvMont.setText(String.valueOf(decimalFormat.format(expense.getMonto())));
             }
-            tvFecha.setText(expense.getDate().toString());
+            tvFecha.setText(expense.getDate());
             ivIcon.setImageBitmap(expense.getIcon());
         }
+
+
     }
 }
