@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.example.salarymanager.Gasto;
+import org.example.salarymanager.Item;
 import org.example.salarymanager.R;
 
 import java.text.DecimalFormat;
@@ -20,9 +20,9 @@ import java.util.Locale;
 //adaptador para el RecivlerView del objeto Gasto
 public class AdapterTodo extends RecyclerView.Adapter<AdapterTodo.GastoViewHolder> {
 
-    private ArrayList<Gasto> gastos;
+    private ArrayList<Item> gastos;
 
-    public AdapterTodo(ArrayList<Gasto> gastos) {
+    public AdapterTodo(ArrayList<Item> gastos) {
         this.gastos = gastos;
     }
 
@@ -37,7 +37,7 @@ public class AdapterTodo extends RecyclerView.Adapter<AdapterTodo.GastoViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull GastoViewHolder holder, int position) {
-        Gasto expense = gastos.get(position);
+        Item expense = gastos.get(position);
         holder.bind(expense);
     }
 
@@ -61,7 +61,7 @@ public class AdapterTodo extends RecyclerView.Adapter<AdapterTodo.GastoViewHolde
             ivIcon = itemView.findViewById(R.id.imageViewIcon);
         }
 
-        public void bind(Gasto expense) {
+        public void bind(Item expense) {
             tvNom.setText(expense.getNombre());
             DecimalFormat decimalFormat = new DecimalFormat("#,##0.00€",new DecimalFormatSymbols(Locale.ITALIAN));
             double monto = expense.getMonto();

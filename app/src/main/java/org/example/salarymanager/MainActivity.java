@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private AdapterViewPager vpAdapter;
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
-    ArrayList<Gasto> gastos;
+    ArrayList<Item> gastos;
     RecyclerView rv;
     ActionBar ab;
     Button bAdd;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             monto_gasto=intent.getDoubleExtra("monto",0.0);
             icon=intent.getParcelableExtra("icon");
             //creacion del gasto
-            Gasto gasto = new Gasto(nom,monto_gasto,sdate,icon);
+            Item gasto = new Item(nom,monto_gasto,sdate,icon);
             vpAdapter.addItem(gasto);
             //se vuelve a guardar la lista de gastos actualizada
             gastos.add(gasto);
@@ -193,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),EditActivity.class);
+                intent.putExtra("salario",salario);
+                intent.putExtra("objetivo",objetivo);
                 startActivityForResult(intent,2);
             }
         });
@@ -243,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         // Creacion de la notificacion
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.fuegos_artificiales)
-                .setContentTitle("Felizidades!")
+                .setContentTitle("Felicidades!")
                 .setContentText("LO HAS CONSEGUIDO!")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)

@@ -5,21 +5,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import org.example.salarymanager.Gasto;
+import org.example.salarymanager.Item;
 import org.example.salarymanager.fragments.GastosFragment;
 import org.example.salarymanager.fragments.IngresosFragment;
 import org.example.salarymanager.fragments.TodoFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AdapterViewPager extends FragmentStateAdapter {
-    ArrayList <Gasto> items;
+    ArrayList <Item> items;
     TodoFragment tfInstance;
 
     GastosFragment gfInstance;
     IngresosFragment ifInstance;
-    public AdapterViewPager(@NonNull FragmentActivity fragmentActivity, ArrayList<Gasto> items) {
+    public AdapterViewPager(@NonNull FragmentActivity fragmentActivity, ArrayList<Item> items) {
         super(fragmentActivity);
         this.items = items;
     }
@@ -29,19 +28,19 @@ public class AdapterViewPager extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                tfInstance = TodoFragment.newInstance((ArrayList<Gasto>) items.clone());
+                tfInstance = TodoFragment.newInstance((ArrayList<Item>) items.clone());
                 return tfInstance;
             case 1:
-                gfInstance = GastosFragment.newInstance((ArrayList<Gasto>) items.clone());
+                gfInstance = GastosFragment.newInstance((ArrayList<Item>) items.clone());
                 return gfInstance;
             case 2:
-                ifInstance = IngresosFragment.newInstance((ArrayList<Gasto>) items.clone());
+                ifInstance = IngresosFragment.newInstance((ArrayList<Item>) items.clone());
                 return ifInstance;
             default:
                 return null;
         }
     }
-    public void addItem(Gasto item){
+    public void addItem(Item item){
         if(tfInstance != null) {
             tfInstance.addItem(item);
         }

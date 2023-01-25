@@ -3,16 +3,15 @@ package org.example.salarymanager;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 //objeto de un Gasto
-public class Gasto implements Serializable {
+public class Item implements Serializable {
     private String nombre;
     private double monto;
     private ProxyBitmap icon;
     private String date;
 
-    public Gasto(String n, double cant, String date, Bitmap icon){
+    public Item(String n, double cant, String date, Bitmap icon){
         nombre=n;
         monto=cant;
         this.date = date;

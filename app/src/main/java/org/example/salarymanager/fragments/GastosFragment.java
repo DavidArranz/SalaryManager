@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.example.salarymanager.adapters.AdapterGastos;
-import org.example.salarymanager.adapters.AdapterTodo;
-import org.example.salarymanager.Gasto;
+import org.example.salarymanager.Item;
 import org.example.salarymanager.R;
 
 import java.util.ArrayList;
@@ -23,15 +22,15 @@ import java.util.ArrayList;
  */
 public class GastosFragment extends Fragment {
     RecyclerView rv;
-    private ArrayList<Gasto> items;
+    private ArrayList<Item> items;
     private AdapterGastos adapter;
-    public GastosFragment(ArrayList<Gasto> items) {
+    public GastosFragment(ArrayList<Item> items) {
         this.items = filterItems(items);
     }
 
-    private ArrayList<Gasto> filterItems(ArrayList<Gasto> items) {
-        ArrayList<Gasto> filteredItems = new ArrayList<Gasto>();
-        for(Gasto item : items){
+    private ArrayList<Item> filterItems(ArrayList<Item> items) {
+        ArrayList<Item> filteredItems = new ArrayList<Item>();
+        for(Item item : items){
             if(item.getMonto()<0){
                 filteredItems.add(item);
             }
@@ -39,7 +38,7 @@ public class GastosFragment extends Fragment {
         return filteredItems;
     }
 
-    public static GastosFragment newInstance(ArrayList<Gasto> items) {
+    public static GastosFragment newInstance(ArrayList<Item> items) {
         GastosFragment fragment = new GastosFragment(items);
         return fragment;
     }
@@ -61,7 +60,7 @@ public class GastosFragment extends Fragment {
     }
 
 
-    public void addItem(Gasto item) {
+    public void addItem(Item item) {
         items.add(item);
             adapter.notifyItemInserted(items.size()-1);
     }

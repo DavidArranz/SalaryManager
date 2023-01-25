@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.example.salarymanager.adapters.AdapterIngresos;
-import org.example.salarymanager.adapters.AdapterTodo;
-import org.example.salarymanager.Gasto;
+import org.example.salarymanager.Item;
 import org.example.salarymanager.R;
 
 import java.util.ArrayList;
@@ -23,22 +22,22 @@ import java.util.ArrayList;
  */
 public class IngresosFragment extends Fragment {
     RecyclerView rv;
-    private ArrayList<Gasto> items;
+    private ArrayList<Item> items;
     private AdapterIngresos adapter;
-    public IngresosFragment(ArrayList<Gasto> items) {
+    public IngresosFragment(ArrayList<Item> items) {
         this.items = filterItems(items);
     }
 
-    private ArrayList<Gasto> filterItems(ArrayList<Gasto> items) {
-        ArrayList<Gasto> filteredItems = new ArrayList<Gasto>();
-        for(Gasto item : items){
+    private ArrayList<Item> filterItems(ArrayList<Item> items) {
+        ArrayList<Item> filteredItems = new ArrayList<Item>();
+        for(Item item : items){
             if(item.getMonto()>0){
                 filteredItems.add(item);
             }
         }
         return filteredItems;
     }
-    public static IngresosFragment newInstance(ArrayList<Gasto> items) {
+    public static IngresosFragment newInstance(ArrayList<Item> items) {
         IngresosFragment fragment = new IngresosFragment(items);
         return fragment;
     }
@@ -60,7 +59,7 @@ public class IngresosFragment extends Fragment {
     }
 
 
-    public void addItem(Gasto item) {
+    public void addItem(Item item) {
         items.add(item);
         adapter.notifyItemInserted(items.size()-1);
     }

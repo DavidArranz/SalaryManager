@@ -68,30 +68,32 @@ public class AddActivity extends AppCompatActivity {
                 if(!sIngreso.isChecked()){
                     monto = -monto;
                 }
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("nombre",nom);
-                intent.putExtra("monto",monto);
-                intent.putExtra("date",date);
-                Bitmap bmSmall;
 
-                if(selected){
-                    Bitmap bm = ((BitmapDrawable)ivIcono.getDrawable()).getBitmap();
-                     bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
 
-                }else{
-                    Bitmap bm = null;
-                    if(monto<0){
-                        bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.flecha_izq)).getBitmap();
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    intent.putExtra("nombre",nom);
+                    intent.putExtra("monto",monto);
+                    intent.putExtra("date",date);
+                    Bitmap bmSmall;
+
+                    if(selected){
+                        Bitmap bm = ((BitmapDrawable)ivIcono.getDrawable()).getBitmap();
+                         bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
+
                     }else{
-                        bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.derecha)).getBitmap();
-                    }
+                        Bitmap bm = null;
+                        if(monto<0){
+                            bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.flecha_izq)).getBitmap();
+                        }else{
+                            bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.derecha)).getBitmap();
+                        }
 
-                     bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
+                         bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
+                    }
+                    intent.putExtra("icon",(bmSmall));
+                    setResult(RESULT_OK,intent);
+                    finish();
                 }
-                intent.putExtra("icon",(bmSmall));
-                setResult(RESULT_OK,intent);
-                finish();
-            }
         });
         etDate.setOnClickListener(new View.OnClickListener() {
             @Override

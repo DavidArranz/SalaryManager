@@ -27,12 +27,12 @@ public class FileManager {
     }
     //metodo que devuelve del fichero gastos el arraylist de gastos,
     //en caso de no existir devuelve un arraylist vacio;
-    public ArrayList<Gasto> getGastos(){
-        ArrayList<Gasto> gastos = new ArrayList<>();
+    public ArrayList<Item> getGastos(){
+        ArrayList<Item> gastos = new ArrayList<>();
         if(file_gastos.exists() && file_gastos.length()!=0){
             try {
                 ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file_gastos));
-                gastos = (ArrayList<Gasto>) inputStream.readObject();
+                gastos = (ArrayList<Item>) inputStream.readObject();
                 inputStream.close();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

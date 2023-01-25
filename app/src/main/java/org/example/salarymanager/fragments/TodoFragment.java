@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.example.salarymanager.adapters.AdapterTodo;
-import org.example.salarymanager.Gasto;
+import org.example.salarymanager.Item;
 import org.example.salarymanager.R;
 
 import java.util.ArrayList;
@@ -24,12 +24,12 @@ import java.util.ArrayList;
 public class TodoFragment extends Fragment {
     RecyclerView rv;
     AdapterTodo adapter;
-    private ArrayList<Gasto> items;
-    public TodoFragment(ArrayList<Gasto> items) {
+    private ArrayList<Item> items;
+    public TodoFragment(ArrayList<Item> items) {
         this.items = items;
     }
 
-    public static TodoFragment newInstance(ArrayList<Gasto> items) {
+    public static TodoFragment newInstance(ArrayList<Item> items) {
         TodoFragment fragment = new TodoFragment(items);
         return fragment;
     }
@@ -51,7 +51,7 @@ public class TodoFragment extends Fragment {
     }
 
 
-    public void addItem(Gasto item) {
+    public void addItem(Item item) {
         items.add(item);
         adapter.notifyItemInserted(items.size()-1);
     }
