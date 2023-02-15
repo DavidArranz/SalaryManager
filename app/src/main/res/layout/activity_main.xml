@@ -90,13 +90,6 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewGastos"
-        android:layout_width="55dp"
-        android:layout_height="50dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="19dp" />
-
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"

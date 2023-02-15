@@ -17,6 +17,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -63,37 +64,41 @@ public class AddActivity extends AppCompatActivity {
                 Double monto;
                 nom = etNombre.getText().toString().toUpperCase();
                 date = etDate.getText().toString();
-                monto = Double.parseDouble(etMonto.getText().toString());
-                monto = Math.abs(monto);
-                if(!sIngreso.isChecked()){
-                    monto = -monto;
-                }
-
-
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    intent.putExtra("nombre",nom);
-                    intent.putExtra("monto",monto);
-                    intent.putExtra("date",date);
-                    Bitmap bmSmall;
-
-                    if(selected){
-                        Bitmap bm = ((BitmapDrawable)ivIcono.getDrawable()).getBitmap();
-                         bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
-
-                    }else{
-                        Bitmap bm = null;
-                        if(monto<0){
-                            bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.flecha_izq)).getBitmap();
-                        }else{
-                            bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.derecha)).getBitmap();
-                        }
-
-                         bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
+                if(etMonto.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"Monto es un campo obligatorio",Toast.LENGTH_SHORT).show();
+                }else{
+                    monto = Double.parseDouble(etMonto.getText().toString());
+                    monto = Math.abs(monto);
+                    if(!sIngreso.isChecked()){
+                        monto = -monto;
                     }
-                    intent.putExtra("icon",(bmSmall));
-                    setResult(RESULT_OK,intent);
-                    finish();
+
+
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        intent.putExtra("nombre",nom);
+                        intent.putExtra("monto",monto);
+                        intent.putExtra("date",date);
+                        Bitmap bmSmall;
+                        Bitmap bm;
+                        if(selected){
+                            bm = ((BitmapDrawable)ivIcono.getDrawable()).getBitmap();
+                             bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
+
+                        }else{
+                            bm = null;
+                            if(monto<0){
+                                bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.flecha_izq)).getBitmap();
+                            }else{
+                                bm = ((BitmapDrawable)getResources().getDrawable(R.drawable.derecha)).getBitmap();
+                            }
+
+                             bmSmall=Bitmap.createScaledBitmap(bm,70,70,false);
+                        }
+                        intent.putExtra("icon",(bmSmall));
+                        setResult(RESULT_OK,intent);
+                        finish();
                 }
+            }
         });
         etDate.setOnClickListener(new View.OnClickListener() {
             @Override

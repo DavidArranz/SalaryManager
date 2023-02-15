@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     ArrayList<Item> gastos;
-    RecyclerView rv;
     ActionBar ab;
     Button bAdd;
     ImageButton bEdit;
@@ -122,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
         tvSalario = findViewById(R.id.textViewEditSalario);
         bEdit=findViewById(R.id.imageButtonEdit);
         bAdd = findViewById(R.id.buttonAdd);
-        rv = findViewById(R.id.recyclerViewGastos);
-        //layout del reciclerview
-        rv.setLayoutManager(new LinearLayoutManager(this));
 
 
         //escondo la ActionBar tansolo por movivos esteticos
@@ -216,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         int currentMonth = calendar.get(Calendar.MONTH);
         //si el mes a cambiado
         if (currentMonth != previousMonth) {
-            if(monto >= objetivo && currentMonth != -1) {
+            if(monto >= objetivo && previousMonth != -1) {
                 notification();
             }
             //resetea el monto al salario actual
@@ -240,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
     private void notification() {
         //intent que abre la aplicacion
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         // Creacion de la notificacion
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -248,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitle("Felicidades!")
                 .setContentText("LO HAS CONSEGUIDO!")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setColor(ContextCompat.getColor(getApplicationContext(),R.color.tema));
         createNotificationChannel();

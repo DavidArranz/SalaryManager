@@ -33,9 +33,9 @@ public class EditActivity extends AppCompatActivity {
                 String obj,sal;
                 obj=etObjetivo.getText().toString();
                 sal=etSalario.getText().toString();
-                int inobj,insal;
-                inobj = Integer.parseInt(obj);
-                insal = Integer.parseInt(sal);
+                double inobj,insal;
+                inobj = Double.parseDouble(obj);
+                insal = Double.parseDouble(sal);
                 if(obj.equals("") || sal.equals("")){
                     Toast.makeText(getApplicationContext(),"No se admiten campos vacios",Toast.LENGTH_SHORT).show();
                 }else if(inobj>insal){
